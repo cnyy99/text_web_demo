@@ -1,7 +1,7 @@
 <template>
     <div id="home">
         <el-container class="con_section">
-            <el-header class="yellowheader">
+            <el-header class="header">
                 <el-image class="el-logo" :src="logoUrl" fit="scale-down"></el-image>
                 <h2 class="headlogo">{{projectName}}</h2>
                 <el-col :span="2" class="userinfo">
@@ -16,36 +16,16 @@
                 </el-col>
             </el-header>
             <el-container>
-                <el-aside style="flex: 0 0 230px;width: 230px;background:#eef1f6">
+                <el-aside class="aside">
                     <el-menu default-active="1-1" class="el-menu-vertical-demo" @select="handleSelect">
-                        <div v-if="account.type!=='administrator'">
-                            <el-menu-item index="1-1">
-                                <i class="el-icon-user"></i>
-                                <span slot="title">家庭成员管理</span>
-                            </el-menu-item>
-                            <el-menu-item index="1-2">
-                                <i class="el-icon-bank-card"></i>
-                                <span slot="title">储蓄账户管理</span>
-                            </el-menu-item>
-                            <el-menu-item index="1-3">
-                                <i class="el-icon-wallet"></i>
-                                <span slot="title">日常收支管理</span>
-                            </el-menu-item>
-                            <el-menu-item index="1-4">
-                                <i class="el-icon-hot-water"></i>
-                                <span slot="title">借入借出管理</span>
-                            </el-menu-item>
-                            <el-menu-item index="1-5">
-                                <i class="el-icon-money"></i>
-                                <span slot="title">理财管理</span>
-                            </el-menu-item>
-                        </div>
-                        <div v-else>
-                            <el-menu-item index="2-1">
-                                <i class="el-icon-user"></i>
-                                <span slot="title">账号管理</span>
-                            </el-menu-item>
-                        </div>
+                        <el-menu-item index="1-1">
+                            <i class="el-icon-user"></i>
+                            <span slot="title">文本情感分析</span>
+                        </el-menu-item>
+                        <el-menu-item index="1-2">
+                            <i class="el-icon-notebook-2"></i>
+                            <span slot="title">留言区</span>
+                        </el-menu-item>
                     </el-menu>
                 </el-aside>
                 <el-main class="home_main">
@@ -64,6 +44,7 @@
                     </el-col>
                 </el-main>
             </el-container>
+            <el-footer class="footer">Footer</el-footer>
         </el-container>
     </div>
 </template>
@@ -154,7 +135,15 @@
         width: 100%;
     }
 
-    .yellowheader {
+    .header {
+        height: 60px;
+        line-height: 60px;
+        background: #ECBB17;
+        color: #000;
+        font-family: "Microsoft YaHei", serif;
+    }
+
+    .footer {
         height: 60px;
         line-height: 60px;
         background: #ECBB17;
@@ -164,6 +153,12 @@
 
     .el-menu-item.is-active {
         color: #67c23a;
+    }
+
+    .aside {
+        flex: 0 0 230px;
+        width: 230px;
+        background: #eef1f6
     }
 
     .headlogo {
@@ -218,4 +213,5 @@
         display: inline-block;
         float: left;
     }
+
 </style>
