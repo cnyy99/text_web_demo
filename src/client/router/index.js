@@ -7,15 +7,8 @@ import store from './../store/store'
 // 导入相应的子组件
 import Login from "../components/Login";
 import Home from "../components/Home";
-import member from "../components/member";
 import Register from "../components/Register";
-import saving from "../components/saving";
 import notFound from "../components/notFound";
-import account from "../components/account";
-import balance from "../components/balance";
-import finance from "../components/finance";
-import changepwd from "../components/changepwd";
-import borrow from "../components/borrowing";
 import axios from 'axios'
 import sha256 from 'crypto-js/sha256';
 
@@ -29,6 +22,10 @@ var router = new Router({
             name: 'register',
             path: '/register',
             component: Register
+        },{
+            name: 'login',
+            path: '/login',
+            component: Login
         },
         {
             name: 'home',
@@ -37,16 +34,16 @@ var router = new Router({
             meta: {
                 requireAuth: true,
             },
-            children: [
-                {
-                    path: 'member',
-                    component: member,
-                    name: '家庭成员管理',
-                    meta: {
-                        requireAuth: true,
-                    },
-                }
-            ]
+            // children: [
+            //     {
+            //         path: 'member',
+            //         component: member,
+            //         name: '家庭成员管理',
+            //         meta: {
+            //             requireAuth: true,
+            //         },
+            //     }
+            // ]
         }, {
             path: '*',
             name: 'NotFound',

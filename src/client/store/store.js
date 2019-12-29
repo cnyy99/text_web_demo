@@ -22,7 +22,9 @@ const store = new Vuex.Store({
     state: {
         isLogin: false,
         account: null,
-        members: null,
+        comments: null,
+        frontSalt:'@Hi1Vssic7&kEIWb',
+        projectName:'demo',
     },
     mutations: {
         setLogin(state, new_login_state) {
@@ -32,8 +34,8 @@ const store = new Vuex.Store({
         setAccount(state, account) {
             state.account = account;
         },
-        setMembers(state, members) {
-            state.members = members;
+        setComments(state, comments) {
+            state.comments = comments;
         },
     },
     actions: {

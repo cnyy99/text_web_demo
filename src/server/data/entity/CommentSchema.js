@@ -1,5 +1,5 @@
 const EntitySchema = require("typeorm").EntitySchema;
-const Member = require("../model/Models").Comment;
+const Comment = require("../model/Models").Comment;
 module.exports = new EntitySchema({
     name: "Comment",
     target: Comment,

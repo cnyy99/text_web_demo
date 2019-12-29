@@ -69,12 +69,14 @@ app.post('/api/login', async function (req, res) {
     let account = await Repositories.accountRepository.findOne(
         {name: req.body.name}
     );
+    console.log(JSON.stringify(req.body,null,2));
+    console.log(JSON.stringify(account,null,2));
     if (account && account.pwd === sha256(req.body.pwd + SALT).toString()) {
         let cookieString = account.id + '.' + sha256(account.name + SALT)
             .toString();
         account.pwd = account.pwd.substring(0, 1);
         res.cookie('account', cookieString, {expires: new Date(Date.now() + 1000 * 60 * 10)});
-        res.json(account);
+        await res.json(account);
     } else {
         res.status(203).end();
     }
@@ -83,7 +85,7 @@ app.post('/api/login', async function (req, res) {
 app.post('/api/register', async function (req, res) {
     let id = req.body.id ? req.body.id : undefined;
     let type = req.body.type ? req.body.type : 'normal';
-    const account = new Account(req.body.name, sha256(req.body.pwd + SALT).toString(), type, undefined, undefined, id);
+    const account = new Account(req.body.name, sha256(req.body.pwd + SALT).toString(), Date.now(), req.body.email, type, id);
     try {
         const newAccount = await Repositories.accountRepository.save(account);
         res.status(200).end();
@@ -91,6 +93,7 @@ app.post('/api/register', async function (req, res) {
         console.log('error ==> ' + e);
         res.status(203).end();
     }
+    console.log(JSON.stringify(req.body,null,2))
     // res.json(toJSON(account, 'success'));
 });
 

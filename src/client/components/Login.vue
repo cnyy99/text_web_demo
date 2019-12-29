@@ -1,17 +1,17 @@
 <template>
     <el-form ref="LoginFrom" :model="account" :rules="rules" label-position="left" label-width="0px"
              class="demo-ruleForm login-container">
-        <h3 class="title">请登录{{project_name}}</h3>
-        <el-form-item prop="username">
-            <el-input type="text" v-model="account.username" auto-complete="off" placeholder="账号"
+        <h3 class="title">请登录{{projectName}}</h3>
+        <el-form-item prop="name">
+            <el-input type="text" v-model="account.name" auto-complete="off" placeholder="账号"
                       prefix-icon="el-icon-user" clearable></el-input>
         </el-form-item>
         <el-form-item prop="pwd">
             <el-input type="password" v-model="account.pwd" auto-complete="off" placeholder="密码"
-                      prefix-icon="el-icon-lock" clearable show-password></el-input>
+                      prefix-icon="el-icon-lock" @keyup.enter.native="checkCode()" clearable show-password></el-input>
         </el-form-item>
-        <Verify @success="inputSuccess('success')" @error="inputError('error')" :type="1" :show-button="false" :code-length="4"
-                ref="Verify"></Verify>
+        <Verify @success="inputSuccess('success')" @error="inputError('error')" :type="1" :show-button="false"
+                :code-length="4" ref="Verify"></Verify>
         <!--        <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>-->
         <el-form-item>
             <el-button @click="checkCode()" type="primary" style="width:100%;" :loading="logining">登录</el-button>
@@ -23,15 +23,15 @@
 <script>
     import Verify from 'vue2-verify'
     import sha256 from 'crypto-js/sha256';
+    import {mapState} from "vuex";
 
     export default {
         name: 'login',
         data() {
             return {
-                project_name: '财务管理系统',
                 logining: false,
                 account: {
-                    username: '',
+                    name: '',
                     pwd: ''
                 },
                 rules: {
@@ -59,10 +59,10 @@
                     if (valid) {
                         this.logining = true;
                         // alert('1username: ' + this.account.username + '\npwd: ' + this.account.pwd);
-                        var pwd = sha256(this.account.pwd + '@Hi1Vssic7&kEIWb').toString();
+                        var pwd = sha256(this.account.pwd + this.frontSalt).toString();
                         this.account.pwd = pwd.substring(0, 20);
                         var loginParams = {
-                            name: this.account.username,
+                            name: this.account.name,
                             pwd: pwd
                         };
                         this.$axios.post('/api/login', loginParams)
@@ -123,7 +123,11 @@
         },
         components: {
             Verify
-        }
+        },
+        computed: mapState([
+            'frontSalt',
+            'projectName'
+        ])
     }
 </script>
 

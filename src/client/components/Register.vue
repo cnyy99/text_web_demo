@@ -1,14 +1,14 @@
 <template>
     <el-form ref="RegisterFrom" :model="account" :rules="rules" label-position="left" label-width="0px"
              class="demo-ruleForm login-container">
-        <h3 class="title">{{project_name}}</h3>
+        <h3 class="title">{{projectName}}</h3>
         <el-form-item prop="username">
             <el-input type="text" v-model="account.name" auto-complete="off" placeholder="账号"
                       prefix-icon="el-icon-user" clearable></el-input>
         </el-form-item>
         <el-form-item prop="email">
-            <el-input type="email" v-model="account.email" auto-complete="off" placeholder="账号"
-                      prefix-icon="el-icon-email" clearable></el-input>
+            <el-input type="email" v-model="account.email" auto-complete="off" placeholder="邮箱"
+                      prefix-icon="el-icon-message" clearable></el-input>
         </el-form-item>
         <el-form-item prop="pwd">
             <el-input type="password" v-model="account.pwd" auto-complete="off" placeholder="密码"
@@ -18,17 +18,18 @@
             <el-input type="password" v-model="account.pwd2" auto-complete="off" placeholder="重新输入密码"
                       prefix-icon="el-icon-lock" clearable show-password></el-input>
         </el-form-item>
-<!--        <el-form-item prop="type" v-if="!NotAddAccount">-->
-<!--            <el-select v-model="account.type" placeholder="请选择账号类型">-->
-<!--                <el-option-->
-<!--                        v-for="item in typeOptions"-->
-<!--                        :key="item.value"-->
-<!--                        :label="item.label"-->
-<!--                        :value="item.value">-->
-<!--                </el-option>-->
-<!--            </el-select>-->
-<!--        </el-form-item>-->
-        <Verify @success="inputSuccess('success')" @error="inputError('error')" :type="1" :show-button="false" :code-length="4"
+        <!--        <el-form-item prop="type" v-if="!NotAddAccount">-->
+        <!--            <el-select v-model="account.type" placeholder="请选择账号类型">-->
+        <!--                <el-option-->
+        <!--                        v-for="item in typeOptions"-->
+        <!--                        :key="item.value"-->
+        <!--                        :label="item.label"-->
+        <!--                        :value="item.value">-->
+        <!--                </el-option>-->
+        <!--            </el-select>-->
+        <!--        </el-form-item>-->
+        <Verify @success="inputSuccess('success')" @error="inputError('error')" :type="1" :show-button="false"
+                :code-length="4"
                 ref="VerifyRegister"></Verify>
         <!--        <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>-->
         <el-form-item>
@@ -44,6 +45,7 @@
 <script>
     import Verify from 'vue2-verify'
     import sha256 from 'crypto-js/sha256';
+    import {mapState} from "vuex";
 
     export default {
         name: 'register',
@@ -57,18 +59,27 @@
                     callback();
                 }
             };
+            var validateEmail = (rule, value, callback) => {
+                var regex = /^([0-9A-Za-z\-_.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g;
+                if (value === '') {
+                    callback(new Error('请输入邮箱'));
+                } else if (regex.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error('邮箱地址非法'));
+                }
+            };
             return {
-                project_name: 'Sentiment Analysis Demo of Bjfu',
                 logining: false,
                 account: {
                     name: '',
                     pwd: '',
                     pwd2: '',
                     type: 'normal',
-                    email:'',
+                    email: '',
                 },
                 rules: {
-                    username: [
+                    name: [
                         {
                             required: true,
                             message: '请输入账号',
@@ -92,7 +103,7 @@
                     email: [
                         {
                             required: true,
-                            validator: validatePass2,
+                            validator: validateEmail,
                             trigger: ['blur', 'change']
                         },
                     ]
@@ -105,12 +116,12 @@
                 this.$refs.RegisterFrom.validate((valid) => {
                     if (valid) {
                         this.logining = true;
-                        var pwd = sha256(this.account.pwd + '@Hi1Vssic7&kEIWb')
+                        var pwd = sha256(this.account.pwd + this.frontSalt)
                             .toString();
                         this.account.pwd = pwd.substring(0, 20);
-                        this.account.pwd2 = pwd.substring(0, 20);
                         var registerParams = {
-                            name: this.account.username,
+                            name: this.account.name,
+                            email: this.account.email,
                             pwd: pwd,
                             type: this.account.type,
                         };
@@ -124,16 +135,18 @@
                                         message: '注册成功，请登录',
                                         type: 'success'
                                     });
-                                    if (this.NotAddAccount) {
-                                        this.$router.push('/login');
-                                    } else {
-                                        this.$emit('setShowRegisterDialog', false);
-                                        this.$message({
-                                            showClose: true,
-                                            message: "添加成功",
-                                            type: 'success'
-                                        });
-                                    }
+                                    this.$router.push('/login');
+
+                                    // if (this.NotAddAccount) {
+                                    //     this.$router.push('/login');
+                                    // } else {
+                                    //     this.$emit('setShowRegisterDialog', false);
+                                    //     this.$message({
+                                    //         showClose: true,
+                                    //         message: "添加成功",
+                                    //         type: 'success'
+                                    //     });
+                                    // }
                                     return true;
                                 } else {
                                     this.$message({
@@ -178,7 +191,11 @@
         },
         components: {
             Verify
-        }
+        },
+        computed: mapState([
+            'frontSalt',
+            'projectName'
+        ])
     }
 </script>
 

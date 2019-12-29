@@ -2,8 +2,8 @@
     <div id="home">
         <el-container class="con_section">
             <el-header class="yellowheader">
-                <el-image class="el-logo" src="/static/logo.png" fit="scale-down"></el-image>
-                <h2 class="headlogo">{{project_name}}</h2>
+                <el-image class="el-logo" :src="logoUrl" fit="scale-down"></el-image>
+                <h2 class="headlogo">{{projectName}}</h2>
                 <el-col :span="2" class="userinfo">
                     <el-dropdown @command="handleCommand">
                         <i class="el-icon-setting" style="margin-right: 15px"></i>
@@ -77,14 +77,15 @@
                 searchCriteria: '',
                 project_name: '财务管理系统',
                 username: '鸭鸭',
+                logoUrl: '/static/logo1-t.png',
             }
         },
         created() {
-            if (this.account.type === 'administrator') {
-                this.$router.push('/home/account');
-            } else {
-                this.$router.push('/home/member');
-            }
+            // if (this.account.type === 'administrator') {
+            //     this.$router.push('/home/account');
+            // } else {
+            //     this.$router.push('/home/member');
+            // }
         },
         methods: {
             handleIconClick(ev) {
@@ -133,7 +134,8 @@
         },
         computed: mapState([
             // 映射 this.account 为 store.state.account
-            'account'
+            'account',
+            'projectName',
         ])
     }
 </script>
