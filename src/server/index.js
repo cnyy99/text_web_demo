@@ -148,7 +148,7 @@ app.post('/api/getSenti', async function (req, res) {
             }
         });
         // console.log(response.data);
-        console.log(JSON.stringify(response.data, null, 2));
+        // console.log(JSON.stringify(response.data, null, 2));
         res.json(response.data);
 
     } catch (err) {

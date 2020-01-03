@@ -44,7 +44,28 @@
                     </el-col>
                 </el-main>
             </el-container>
-            <el-footer class="footer">Footer</el-footer>
+            <el-footer class="footer">
+                <el-row>
+                    <el-row>
+                        <el-col  :span="12" :offset="6" class="text-center">
+                            <p>
+                                <a href="https://github.com/bjfunlp" class="social-item" target="_blank"><span
+                                        class="icon-github2"></span></a>
+                                <a href="https://zh.wikipedia.org/zh-hans/%E6%96%87%E6%9C%AC%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90"
+                                   class="social-item" target="_blank"><span
+                                        class="fa fa-wikipedia-w"></span></a>
+                            </p>
+                        </el-col>
+                    </el-row>
+                    <el-row >
+                        <el-col  :span="12" :offset="6" class="text-center" style="color: black;">
+                            Copyright &copy;
+                            {{new Date().getFullYear()}}
+                            - bjfunlp All rights reserved
+                        </el-col>
+                    </el-row>
+                </el-row>
+            </el-footer>
         </el-container>
     </div>
 </template>
@@ -93,7 +114,7 @@
                         }
                     }).catch((err) => {
                         console.log(err);
-                    })
+                    });
                 } else if (command === 'changepwd') {
                     this.$router.push('/home/changepwd');
                 }
@@ -125,15 +146,15 @@
         line-height: 60px;
         background: #ECBB17;
         color: #000;
-        font-family: "Microsoft YaHei", serif;
+        /*font-family: "Microsoft YaHei", serif;*/
     }
 
     .footer {
         height: 60px;
-        line-height: 60px;
+        /*line-height: 60px;*/
         background: #ECBB17;
         color: #000;
-        font-family: "Microsoft YaHei", serif;
+        /*font-family: "Microsoft YaHei", serif;*/
     }
 
     .el-menu-item.is-active {
