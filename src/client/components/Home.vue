@@ -172,7 +172,6 @@
 
     .home_main {
         padding: 10px;
-        background: white;
     }
 
     .breadcrumb-container .title {

@@ -38,7 +38,7 @@
             </div>
         </el-row>
         <el-row>
-            <el-col :offset="18">
+            <el-col :span="5" :offset="18">
                 结果有问题？
                 <el-button type="text" @click="showReplyDialog()" size="big">点此反馈
                 </el-button>
