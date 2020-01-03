@@ -56,8 +56,6 @@
         data() {
             return {
                 searchCriteria: '',
-                project_name: '财务管理系统',
-                username: '鸭鸭',
                 logoUrl: '/static/logo1-t.png',
             }
         },
@@ -75,22 +73,10 @@
             handleSelect(key, keyPath) {
                 switch (key) {
                     case '1-1':
-                        this.$router.push('/home/member');
+                        this.$router.push('/home/text');
                         break;
                     case '1-2':
-                        this.$router.push('/home/saving');
-                        break;
-                    case '1-3':
-                        this.$router.push('/home/balance');
-                        break;
-                    case '1-4':
-                        this.$router.push('/home/borrowing');
-                        break;
-                    case '1-5':
-                        this.$router.push('/home/finance');
-                        break;
-                    case '2-1':
-                        this.$router.push('/home/account');
+                        this.$router.push('/home/comment');
                         break;
                 }
             },
@@ -114,7 +100,6 @@
             }
         },
         computed: mapState([
-            // 映射 this.account 为 store.state.account
             'account',
             'projectName',
         ])
@@ -187,6 +172,7 @@
 
     .home_main {
         padding: 10px;
+        background: white;
     }
 
     .breadcrumb-container .title {

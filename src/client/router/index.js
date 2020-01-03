@@ -9,6 +9,8 @@ import Login from "../components/Login";
 import Home from "../components/Home";
 import Register from "../components/Register";
 import notFound from "../components/notFound";
+import text from "../components/my_text";
+import comment from "../components/comment";
 import axios from 'axios'
 import sha256 from 'crypto-js/sha256';
 
@@ -22,7 +24,7 @@ var router = new Router({
             name: 'register',
             path: '/register',
             component: Register
-        },{
+        }, {
             name: 'login',
             path: '/login',
             component: Login
@@ -34,16 +36,24 @@ var router = new Router({
             meta: {
                 requireAuth: true,
             },
-            // children: [
-            //     {
-            //         path: 'member',
-            //         component: member,
-            //         name: '家庭成员管理',
-            //         meta: {
-            //             requireAuth: true,
-            //         },
-            //     }
-            // ]
+            children: [
+                {
+                    path: 'text',
+                    component: text,
+                    name: '文本情感分析',
+                    meta: {
+                        requireAuth: true,
+                    },
+                },
+                {
+                    path: 'comment',
+                    component: comment,
+                    name: '留言',
+                    meta: {
+                        requireAuth: true,
+                    },
+                },
+            ]
         }, {
             path: '*',
             name: 'NotFound',

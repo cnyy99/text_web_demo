@@ -5,6 +5,7 @@ import logger from 'morgan'
 import bodyParser from 'body-parser'
 import webpack from 'webpack'
 import "reflect-metadata";
+import axios from 'axios';
 // 引入history模块
 import history from 'connect-history-api-fallback'
 import {Account, Text, Comment} from './data/model/Models'
@@ -12,7 +13,9 @@ import {Account, Text, Comment} from './data/model/Models'
 import {createConnection, getRepository, In} from 'typeorm'
 import sha256 from 'crypto-js/sha256';
 import sqlOptions from './data/sqlOptions'
+
 const SALT = 'c@QSK2*fpav939#F';
+const SENTIMENT_URL = 'http://api.bosonnlp.com/sentiment/analysis';
 // 正式环境时，下面两个模块不需要引入
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
@@ -69,8 +72,8 @@ app.post('/api/login', async function (req, res) {
     let account = await Repositories.accountRepository.findOne(
         {name: req.body.name}
     );
-    console.log(JSON.stringify(req.body,null,2));
-    console.log(JSON.stringify(account,null,2));
+    console.log(JSON.stringify(req.body, null, 2));
+    console.log(JSON.stringify(account, null, 2));
     if (account && account.pwd === sha256(req.body.pwd + SALT).toString()) {
         let cookieString = account.id + '.' + sha256(account.name + SALT)
             .toString();
@@ -85,7 +88,8 @@ app.post('/api/login', async function (req, res) {
 app.post('/api/register', async function (req, res) {
     let id = req.body.id ? req.body.id : undefined;
     let type = req.body.type ? req.body.type : 'normal';
-    const account = new Account(req.body.name, sha256(req.body.pwd + SALT).toString(), Date.now(), req.body.email, type, id);
+    const account = new Account(req.body.name, sha256(req.body.pwd + SALT)
+        .toString(), Date.now(), req.body.email, type, id);
     try {
         const newAccount = await Repositories.accountRepository.save(account);
         res.status(200).end();
@@ -93,7 +97,7 @@ app.post('/api/register', async function (req, res) {
         console.log('error ==> ' + e);
         res.status(203).end();
     }
-    console.log(JSON.stringify(req.body,null,2))
+    console.log(JSON.stringify(req.body, null, 2))
     // res.json(toJSON(account, 'success'));
 });
 
@@ -130,46 +134,29 @@ app.post('/api/getOne/:type', async function (req, res) {
     }
 });
 
-app.post('/api/getAll/:type', async function (req, res) {
+app.post('/api/getSenti', async function (req, res) {
     try {
-        if (req.params.type.toLowerCase() === 'account') {
-            const account = await Repositories.accountRepository.findOne(req.body.id);
-            if (account.type === 'administrator') {
-                const accountList = await Repositories.accountRepository.find();
-                res.json(accountList);
-            } else {
-                res.status(203).end();
+        const response = await axios({
+            method: 'post',
+            url: req.body.rurl,
+            baseURL: SENTIMENT_URL,
+            data: [req.body.textarea],
+            crossDomain: true,
+            headers: {
+                "Accept": "application/json",
+                "X-Token": "dfRKQEfX.33618.MrvbkXnf7-6I",
             }
-        } else {
-            let members = await Repositories.memberRepository.find({
-                account: {id: req.body.id}
-            });
-            if (req.params.type.toLowerCase() === 'member') {
-                res.json(members);
-            } else {
-                let memberIds = members.map((a) => a.id);
-                // console.log('memberIds: ' + memberIds);
-                let tempDataList = await Repositories[req.params.type.toLowerCase() + RepositoryString].find({
-                    member: {id: In(memberIds)},
-                });
-                let tempDataIds = tempDataList.map((a) => a.id);
-                let realDataList = await Repositories[req.params.type.toLowerCase() + RepositoryString].findByIds(tempDataIds, {
-                    relations: ['member']
-                });
-                // console.log('realDataList: ' + JSON.stringify(realDataList, null, 2));
-                res.json(realDataList);
-            }
-        }
-    } catch (e) {
-        console.log('RepositoryType : ' + req.params.type.toLowerCase());
-        console.log('Repository : ' + JSON.stringify(req.body.id, null, 2));
-        console.log('error ==> ' + e);
-        res.status(203).end();
+        });
+        // console.log(response.data);
+        console.log(JSON.stringify(response.data, null, 2));
+        res.json(response.data);
+
+    } catch (err) {
+        console.log(err);
     }
 });
-
 app.post('/api/save/:type', async function (req, res) {
-    // console.log(JSON.stringify(req.body.member, null, 2));
+    // console.log(JSON.stringify(req.body, null, 2));
     try {
         const data = await Repositories[req.params.type.toLowerCase() + RepositoryString].save(req.body.data);
         res.json(data);

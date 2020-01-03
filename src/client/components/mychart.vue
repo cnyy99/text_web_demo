@@ -16,7 +16,7 @@
             },
             limitShowNumber: {
                 type: Number,
-                default: 5
+                default: 2
             }
         },
         data() {
@@ -34,25 +34,17 @@
             ]),
             chartData() {
                 return {
-                    columns: ['用户', '金额'],
-                    rows: this.tableData.map((a) => ({
-                        '用户': this.membersList.find((x) => {
-                            return x.value === a.member.id
-                        }).label,
-                        '金额': a.money
-                    })).reduce((result, item) => {
-                        let itemFound = result.find(a => item.用户 === a.用户);
-                        if (itemFound) {
-                            itemFound.金额 += item.金额;
-                        } else {
-                            let newItem = {
-                                '用户': item.用户,
-                                '金额': item.金额,
-                            };
-                            result.push(newItem);
+                    columns: ['类型', '数值'],
+                    rows: [
+                        {
+                            '类型': '正面指数',
+                            '数值': this.tableData[0],
+                        },
+                        {
+                            '类型': '负面指数',
+                            '数值': this.tableData[1],
                         }
-                        return result;
-                    }, []),
+                    ],
 
                 }
             }
