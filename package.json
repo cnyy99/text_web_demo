@@ -11,6 +11,10 @@
   "author": "chennan <chennansoul@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
+    "@fortawesome/free-brands-svg-icons": "^5.12.0",
+    "@fortawesome/free-regular-svg-icons": "^5.12.0",
+    "@fortawesome/vue-fontawesome": "^0.1.9",
     "@types/node": "^12.0.10",
     "babel-runtime": "^6.23.0",
     "crypto-js": "^3.1.9-1",

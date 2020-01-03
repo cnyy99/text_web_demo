@@ -44,21 +44,23 @@
                     </el-col>
                 </el-main>
             </el-container>
-            <el-footer class="footer">
+            <el-footer class="footer" style="height: auto;">
                 <el-row>
                     <el-row>
-                        <el-col  :span="12" :offset="6" class="text-center">
-                            <p>
-                                <a href="https://github.com/bjfunlp" class="social-item" target="_blank"><span
-                                        class="icon-github2"></span></a>
-                                <a href="https://zh.wikipedia.org/zh-hans/%E6%96%87%E6%9C%AC%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90"
-                                   class="social-item" target="_blank"><span
-                                        class="fa fa-wikipedia-w"></span></a>
-                            </p>
+                        <el-col :span="12" :offset="6" class="text-center">
+                            <a href="https://github.com/bjfunlp" class="social-item" target="_blank">
+                                <font-awesome-icon :icon="['fab', 'github']" size="3x"/>
+                            </a>
+
+                            <a href="https://zh.wikipedia.org/zh-hans/%E6%96%87%E6%9C%AC%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90"
+                               class="social-item" target="_blank">
+                                <font-awesome-icon :icon="['fab', 'wikipedia-w']" size="3x"/>
+                            </a>
                         </el-col>
                     </el-row>
-                    <el-row >
-                        <el-col  :span="12" :offset="6" class="text-center" style="color: black;">
+                    <el-row>
+                        <el-col :span="12" :offset="6" class="text-center"
+                                style="color: black; padding-top: 10px;padding-bottom: 10px;">
                             Copyright &copy;
                             {{new Date().getFullYear()}}
                             - bjfunlp All rights reserved
@@ -150,7 +152,7 @@
     }
 
     .footer {
-        height: 60px;
+        height: auto;
         /*line-height: 60px;*/
         background: #ECBB17;
         color: #000;
@@ -220,4 +222,11 @@
         float: left;
     }
 
+    a {
+        color: inherit;
+    }
+
+    a:hover {
+        color: white;
+    }
 </style>
