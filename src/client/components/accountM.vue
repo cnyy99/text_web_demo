@@ -71,14 +71,14 @@
                 ],
             }
         },
-        async created() {
-            let result = await this.$axios.post('/api/getAll/account', {data: this.account.type});
-            if (!result) {
-                this.errorMessage("数据加载错误");
-            } else {
+        created() {
+            this.$axios.post('/api/getAll/account', {data: this.account.type}).then((result)=>{
                 this.$store.commit('setAccounts', result.data);
                 this.successMessage("数据加载成功");
-            }
+            }).catch((err)=>{
+                this.errorMessage("数据加载错误");
+            });
+
             this.loading = false;
         },
         methods: {
@@ -97,7 +97,7 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(async () => {
+                }).then(() => {
                     this.loading = true;
                     this.$axios.post('/api/remove/account', {
                         data: row,
@@ -120,7 +120,7 @@
                 });
                 this.loading = false;
             },
-            async saveRowEvent(row) {
+            saveRowEvent(row) {
                 var isInsert = false;
                 if (row.id === undefined) {
                     isInsert = true;
@@ -202,16 +202,16 @@
                     type: 'error'
                 });
             },
-            async setShowRegisterDialog(value) {
+            setShowRegisterDialog(value) {
                 this.showRegisterDialog = value;
                 this.loading = true;
-                let result = await this.$axios.post('/api/getAll/account', {data: this.account.type});
-                if (!result) {
-                    this.errorMessage("数据加载错误");
-                } else {
+                this.$axios.post('/api/getAll/account', {data: this.account.type}).then((result)=>{
                     this.$store.commit('setAccounts', result.data);
                     this.successMessage("数据加载成功");
-                }
+                }).catch((err)=>{
+                    this.errorMessage("数据加载错误");
+                });
+
                 this.loading = false;
                 // await this.loadData();
             },

@@ -44,15 +44,14 @@
                 loading: false,
             }
         },
-        async created() {
+        created() {
             this.loading = true;
-            let result = await this.$axios.post('/api/getAll/comment');
-            if (!result) {
-                this.errorMessage("数据加载错误");
-            } else {
+            this.$axios.post('/api/getAll/comment').then((result)=>{
                 this.$store.commit('setComments', result.data);
-                this.successMessage("数据加载成功");
-            }
+            this.successMessage("数据加载成功");
+            }).catch((err)=>{
+                this.errorMessage("数据加载错误");
+            });
             this.loading = false;
         },
         methods: {
@@ -61,7 +60,7 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(async () => {
+                }).then( (_) => {
                     this.loading = true;
                     this.$axios.post('/api/remove/comment', {
                         data: row,

@@ -20,7 +20,8 @@ const SENTIMENT_URL = 'http://api.bosonnlp.com/sentiment/analysis';
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 
-import config from '../../build/webpack.dev.conf'
+// import config from '../../build/webpack.dev.conf'
+import config from '../../build/webpack.prod.conf'
 
 
 let Repositories = {
@@ -138,8 +139,7 @@ app.post('/api/getSenti', async function (req, res) {
     try {
         const response = await axios({
             method: 'post',
-            url: req.body.rurl,
-            baseURL: SENTIMENT_URL,
+            url: SENTIMENT_URL+req.body.rurl,
             data: [req.body.textarea],
             crossDomain: true,
             headers: {

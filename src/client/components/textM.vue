@@ -17,8 +17,10 @@
                 :data.sync="texts"
                 :edit-config="{key: 'id', trigger: 'manual', mode: 'row'}">
             <vxe-table-column type="seq" width="60"></vxe-table-column>
-            <vxe-table-column field="account.name" title="用户名" sortable  :filters="[{data: ''}]" show-overflow></vxe-table-column>
-            <vxe-table-column field="content" title="文本" sortable  :filters="[{data: ''}]" show-overflow></vxe-table-column>
+            <vxe-table-column field="account.name" title="用户名" sortable :filters="[{data: ''}]"
+                              show-overflow></vxe-table-column>
+            <vxe-table-column field="content" title="文本" sortable :filters="[{data: ''}]"
+                              show-overflow></vxe-table-column>
             <vxe-table-column field="oldType" title="分析结果" sortable></vxe-table-column>
             <vxe-table-column field="newType" title="用户结果" sortable></vxe-table-column>
             <vxe-table-column field="dateTime" title="时间" :formatter="formatTime" sortable></vxe-table-column>
@@ -39,21 +41,20 @@
     import Register from './Register';
 
     export default {
-        name:'account',
+        name: 'account',
         data() {
             return {
                 loading: false,
             }
         },
-        async created() {
+        created() {
             this.loading = true;
-            let result = await this.$axios.post('/api/getAll/text');
-            if (!result) {
-                this.errorMessage("数据加载错误");
-            } else {
+            this.$axios.post('/api/getAll/text').then((result) => {
                 this.$store.commit('setTexts', result.data);
                 this.successMessage("数据加载成功");
-            }
+            }).catch((err) => {
+                this.errorMessage("数据加载错误");
+            });
             this.loading = false;
         },
         methods: {
@@ -62,7 +63,7 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(async () => {
+                }).then(() => {
                     this.loading = true;
                     this.$axios.post('/api/remove/text', {
                         data: row,

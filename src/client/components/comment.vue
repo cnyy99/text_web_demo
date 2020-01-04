@@ -70,23 +70,23 @@
 
     export default {
         name: "comment",
-        async created() {
-            try {
-                const data = await this.$axios.post('/api/getAll/comment');
-                // this.$message({
-                //     showClose: true,
-                //     message: JSON.stringify(data,null,2),
-                //     type: 'error'
-                // });
-                this.$store.commit('setComments', data.data);
-                this.currentComments = this.comments.slice((this.currentPage - 1) * this.page_size, (this.currentPage) * this.page_size);
-                console.log(this.currentComments);
-                console.log('(this.currentPage - 1) * this.page_size, (this.currentPage) * this.page_size= ' + ((this.currentPage - 1) * this.page_size - (this.currentPage) * this.page_size));
-                console.log('Math.ceil(this.comments.length/page_size)= ' + Math.ceil(this.comments.length / this.page_size));
-                console.log('this.comments.length= ' + this.comments.length);
-            } catch (e) {
-                console.log(e);
-            }
+        created() {
+                this.$axios.post('/api/getAll/comment').then((data)=>{
+                    // this.$message({
+                    //     showClose: true,
+                    //     message: JSON.stringify(data,null,2),
+                    //     type: 'error'
+                    // });
+                    this.$store.commit('setComments', data.data);
+                    this.currentComments = this.comments.slice((this.currentPage - 1) * this.page_size, (this.currentPage) * this.page_size);
+                    // console.log(this.currentComments);
+                    // console.log('(this.currentPage - 1) * this.page_size, (this.currentPage) * this.page_size= ' + ((this.currentPage - 1) * this.page_size - (this.currentPage) * this.page_size));
+                    // console.log('Math.ceil(this.comments.length/page_size)= ' + Math.ceil(this.comments.length / this.page_size));
+                    // console.log('this.comments.length= ' + this.comments.length);
+                }).catch ((err)=>{
+                    console.log(err);
+                });
+
         },
         data() {
             return {
