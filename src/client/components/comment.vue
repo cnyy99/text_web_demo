@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-button @click="dialogFormVisible=true" size="big">留言
+        <el-button @click="showDialogForm()" size="big">留言
         </el-button>
         <el-dialog title="添加留言" :visible.sync="dialogFormVisible">
             <el-form :model="replyForm">
@@ -75,7 +75,7 @@
                 const data = await this.$axios.post('/api/getAll/comment');
                 // this.$message({
                 //     showClose: true,
-                //     message: JSON.stringify(comments,null,2),
+                //     message: JSON.stringify(data,null,2),
                 //     type: 'error'
                 // });
                 this.$store.commit('setComments', data.data);
@@ -107,9 +107,7 @@
         },
         methods: {
             handleSizeChange(pagination) {
-                console.log('handleSizeChange: ' + pagination);
-                console.log('handleSizeChange: ' + pagination);
-                console.log('handleSizeChange: ' + pagination);
+                // console.log('handleSizeChange: ' + pagination);
             },
             handleCurrentChange(pagination) {
                 this.currentPage = pagination;
@@ -117,6 +115,18 @@
 
                 console.log('handleCurrentChange: ' + pagination);
 
+            },
+            showDialogForm(){
+                if(!this.account)
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '请登陆后惊醒留言',
+                        type: 'error'
+                    });
+                }  else {
+                    this.dialogFormVisible=true;
+                }
             },
             leaveComment() {
                 let data = {

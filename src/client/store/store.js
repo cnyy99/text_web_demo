@@ -22,9 +22,11 @@ const store = new Vuex.Store({
     state: {
         isLogin: false,
         account: null,
+        accounts: null,
         comments: null,
-        frontSalt:'@Hi1Vssic7&kEIWb',
-        projectName:'demo',
+        texts: null,
+        frontSalt: '@Hi1Vssic7&kEIWb',
+        projectName: 'demo',
     },
     mutations: {
         setLogin(state, new_login_state) {
@@ -34,50 +36,28 @@ const store = new Vuex.Store({
         setAccount(state, account) {
             state.account = account;
         },
+        setAccounts(state, accounts) {
+            state.accounts = accounts;
+        },
         setComments(state, comments) {
             state.comments = comments;
+        },
+        setTexts(state, texts) {
+            state.texts = texts;
         },
         unshiftComment(state, comment) {
             state.comments.unshift(comment);
         },
+        restoreAll(state, payload) {
+            state.isLogin = false;
+            state.account = null;
+            state.accounts = null;
+            state.comments = null;
+            state.texts = null;
+        }
     },
     actions: {
-        async loadData({commit, state}, data) {
-            try {
-                if (data.path.endsWith('/')) {
-                    data.path = data.path.substring(0, data.path.length - 1);
-                }
-                let type = data.path.split('/').slice(-1).toString();
-                const receiveData = await axios.post('/api/getAll/' + type, {
-                    id: state.account.id
-                });
-                let saveType = type.toUpperCase()[0] + type.substring(1) + 's';
-                commit('set' + saveType, receiveData.data);
-                if (type !== 'member' && type !== 'account') {
-                    const members = await axios.post('/api/getAll/member', {
-                        id: state.account.id
-                    });
-                    let membersList = members.data.map((e) => {
-                        return {
-                            label: e.name,
-                            value: e.id
-                        }
-                    });
-                    commit('setMembersList', membersList);
-                }
-                return true;
-            } catch (e) {
-                console.log('数据加载失败: ' + e);
-                return false;
-            }
-        },
-        async getType({state}, path) {
-            path = path.toString();
-            if (path.endsWith('/')) {
-                path = path.substring(0, path.length - 1);
-            }
-            return path.split('/').slice(-1).toString();
-        }
+
     },
     plugins: debug ? [logger, PersistedState,] : [PersistedState],
 });

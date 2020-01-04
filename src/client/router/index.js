@@ -10,6 +10,9 @@ import Home from "../components/Home";
 import Register from "../components/Register";
 import notFound from "../components/notFound";
 import text from "../components/my_text";
+import accountM from "../components/accountM";
+import textM from "../components/textM";
+import commentM from "../components/commentM";
 import comment from "../components/comment";
 import axios from 'axios'
 import sha256 from 'crypto-js/sha256';
@@ -21,6 +24,11 @@ var router = new Router({
     mode: 'history',
     routes: [
         {
+            name: '',
+            path: '/',
+            redirect: '/home',
+            component: Register
+        },{
             name: 'register',
             path: '/register',
             component: Register
@@ -34,7 +42,7 @@ var router = new Router({
             path: '/home',
             component: Home,
             meta: {
-                requireAuth: true,
+                requireAuth: false,
             },
             children: [
                 {
@@ -42,13 +50,35 @@ var router = new Router({
                     component: text,
                     name: '文本情感分析',
                     meta: {
-                        requireAuth: true,
+                        requireAuth: false,
                     },
                 },
                 {
                     path: 'comment',
                     component: comment,
                     name: '留言',
+                    meta: {
+                        requireAuth: false,
+                    },
+                },
+                {
+                    path: 'accountM',
+                    component: accountM,
+                    name: '用户管理',
+                    meta: {
+                        requireAuth: true,
+                    },
+                },{
+                    path: 'textM',
+                    component: textM,
+                    name: '反馈管理',
+                    meta: {
+                        requireAuth: true,
+                    },
+                },{
+                    path: 'commentM',
+                    component: commentM,
+                    name: '留言管理',
                     meta: {
                         requireAuth: true,
                     },
@@ -69,7 +99,7 @@ router.beforeEach((to, from, next) => {
         // 下面这个判断是自行实现到底是否有没有登录
         if (store.state.isLogin) {
             // 登录就继续
-            if (to.path === '/home/account') {
+            if (to.path === '/home/accountm'||to.path === '/home/textm'||to.path === '/home/commentm') {
                 if (store.state.account.type === 'administrator') {
                     next();
                 } else {
@@ -102,7 +132,7 @@ router.beforeEach((to, from, next) => {
                         store.commit('setLogin', true);
                         store.commit('setAccount', account);
 
-                        if (to.path === '/home/account') {
+                        if (to.path === '/home/accountm'||to.path === '/home/textm'||to.path === '/home/commentm') {
                             if (account.type === 'administrator') {
                                 next();
                             } else {
@@ -134,7 +164,7 @@ router.beforeEach((to, from, next) => {
 
         // 不需要登录的，可以继续访问
         next({
-            path: '/home',
+            path: '/home/text',
         });
     } else {
         next();

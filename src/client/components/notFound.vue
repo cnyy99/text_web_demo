@@ -2,7 +2,7 @@
     <div class="yellowback">
         <el-row class="el-myrow">
             <el-col :span="8" :offset="6">
-                <a href="/"><el-image class="el-logo" src="/static/logo1-t.png" fit="scale-down"></el-image></a>
+                <a href="/"><el-image class="el-logo" src="/static/logo3-t.png" fit="scale-down"></el-image></a>
                 <div class="grid-content bg-purple">
                     <strong>404</strong>. That's an error.
                     <br>

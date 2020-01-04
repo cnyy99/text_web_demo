@@ -4,7 +4,7 @@
             <el-header class="header">
                 <el-image class="el-logo" :src="logoUrl" fit="scale-down"></el-image>
                 <h2 class="headlogo">{{projectName}}</h2>
-                <el-col :span="2" class="userinfo">
+                <el-col :span="2" class="userinfo" v-if="this.account!=null&&this.account!==undefined">
                     <el-dropdown @command="handleCommand">
                         <i class="el-icon-setting" style="margin-right: 15px"></i>
                         <el-dropdown-menu slot="dropdown">
@@ -13,19 +13,37 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                     <span>{{account.name}}</span>
+                </el-col><el-col :span="2" class="userinfo" v-else>
+                    <router-link to="/login">点此登陆</router-link>
                 </el-col>
             </el-header>
             <el-container>
                 <el-aside class="aside">
                     <el-menu default-active="1-1" class="el-menu-vertical-demo" @select="handleSelect">
-                        <el-menu-item index="1-1">
-                            <i class="el-icon-user"></i>
-                            <span slot="title">文本情感分析</span>
-                        </el-menu-item>
-                        <el-menu-item index="1-2">
-                            <i class="el-icon-notebook-2"></i>
-                            <span slot="title">留言区</span>
-                        </el-menu-item>
+                        <div v-if="!account||account.type!=='administrator'">
+                            <el-menu-item index="1-1">
+                                <i class="el-icon-user"></i>
+                                <span slot="title">文本情感分析</span>
+                            </el-menu-item>
+                            <el-menu-item index="1-2">
+                                <i class="el-icon-notebook-2"></i>
+                                <span slot="title">留言区</span>
+                            </el-menu-item>
+                        </div>
+                        <div v-else>
+                            <el-menu-item index="2-1">
+                                <i class="el-icon-user"></i>
+                                <span slot="title">账号管理</span>
+                            </el-menu-item>
+                            <el-menu-item index="2-2">
+                                <i class="el-icon-user"></i>
+                                <span slot="title">反馈管理</span>
+                            </el-menu-item>
+                            <el-menu-item index="2-3">
+                                <i class="el-icon-user"></i>
+                                <span slot="title">留言管理</span>
+                            </el-menu-item>
+                        </div>
                     </el-menu>
                 </el-aside>
                 <el-main class="home_main">
@@ -83,11 +101,11 @@
             }
         },
         created() {
-            // if (this.account.type === 'administrator') {
-            //     this.$router.push('/home/account');
-            // } else {
-            //     this.$router.push('/home/member');
-            // }
+            if (this.account&&this.account.type === 'administrator') {
+                this.$router.push('/home/accountm');
+            } else {
+                this.$router.push('/home/text');
+            }
         },
         methods: {
             handleIconClick(ev) {
@@ -101,18 +119,27 @@
                     case '1-2':
                         this.$router.push('/home/comment');
                         break;
+                    case '2-1':
+                        this.$router.push('/home/accountm');
+                        break;
+                    case '2-2':
+                        this.$router.push('/home/textm');
+                        break;
+                    case '2-3':
+                        this.$router.push('/home/commentm');
+                        break;
                 }
             },
             handleCommand(command) {
                 if (command === 'logout') {
                     this.$axios.post('/api/logout', {}).then((data) => {
                         if (data.status === 200) {
-                            this.$store.commit('setLogin', false);
+                            this.$store.commit('restoreAll', null);
                             this.$message({
                                 message: '注销成功',
                                 type: 'success'
                             });
-                            this.$router.push('/login');
+                            this.$router.push('/home/text');
                         }
                     }).catch((err) => {
                         console.log(err);

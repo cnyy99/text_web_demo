@@ -18,11 +18,15 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 // import 'vxe-table-plugin-element/dist/style.css'
 import axios from 'axios'
 import VePie from 'v-charts/lib/pie.common'
+import 'xe-utils'
+import VXETable from 'vxe-table'
+import 'vxe-table/lib/index.css'
 
 Vue.component(VePie.name, VePie);
 const VueCookie = require('vue-cookies');
 // Tell Vue to use the plugin
 Vue.use(VueCookie);
+Vue.use(VXETable);
 Vue.config.debug = true;
 Vue.config.productionTip = false;
 

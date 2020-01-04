@@ -156,9 +156,16 @@ app.post('/api/getSenti', async function (req, res) {
     }
 });
 app.post('/api/getAll/:type', async function (req, res) {
-    // console.log(JSON.stringify(req.body, null, 2));
     try {
-        const data = await Repositories[req.params.type.toLowerCase() + RepositoryString].find({ relations: ["account"] });
+        let data = undefined;
+        if (req.params.type.toLowerCase() === 'account' && req.body.data && req.body.data.toLowerCase() === 'administrator') {
+            data = await Repositories[req.params.type.toLowerCase() + RepositoryString].find();
+        } else {
+            data = await Repositories[req.params.type.toLowerCase() + RepositoryString].find(
+                {
+                    relations: ["account"]
+                });
+        }
         res.json(data);
         // console.log(JSON.stringify(data,null,2));
     } catch (e) {

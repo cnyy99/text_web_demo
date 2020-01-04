@@ -147,6 +147,15 @@
                 })
             },
             showReplyDialog() {
+                if(!this.account)
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '请登陆后重试',
+                        type: 'error'
+                    });
+                    return;
+                }
                 if (this.sentiResult[0] === 0.5 && this.sentiResult[1] === 0.5) {
                     this.$message({
                         showClose: true,
@@ -156,7 +165,6 @@
                 } else {
                     this.dialogFormVisible = true;
                 }
-                this.dialogFormVisible = true;
             }
         },
         computed: mapState([

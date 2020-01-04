@@ -24,14 +24,16 @@
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.18",
     "v-charts": "^1.19.0",
-    "vue": "^2.5.13",
+    "vue": "^2.6.0",
     "vue-cookies": "^1.5.13",
     "vue-hot-reload-api": "^2.1.0",
     "vue-html-loader": "^1.2.4",
     "vue-router": "^2.8.1",
     "vue2-verify": "^1.1.5",
     "vuex-along": "^1.2.5",
-    "vuex-persistedstate": "^2.5.4"
+    "vuex-persistedstate": "^2.5.4",
+    "vxe-table": "^1.15.17",
+    "xe-utils": "2.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
