@@ -37,6 +37,9 @@ const store = new Vuex.Store({
         setComments(state, comments) {
             state.comments = comments;
         },
+        unshiftComment(state, comment) {
+            state.comments.unshift(comment);
+        },
     },
     actions: {
         async loadData({commit, state}, data) {
