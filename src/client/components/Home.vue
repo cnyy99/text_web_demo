@@ -8,7 +8,6 @@
                     <el-dropdown @command="handleCommand">
                         <i class="el-icon-setting" style="margin-right: 15px"></i>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item command="changepwd">修改密码</el-dropdown-item>
                             <el-dropdown-item command="logout" style="color: red">注销</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>

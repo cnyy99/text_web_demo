@@ -121,7 +121,7 @@
                 {
                     this.$message({
                         showClose: true,
-                        message: '请登陆后惊醒留言',
+                        message: '请登陆后再留言',
                         type: 'error'
                     });
                 }  else {
