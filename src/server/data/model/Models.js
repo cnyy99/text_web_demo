@@ -13,7 +13,7 @@ class Account {
 }
 
 class Text {
-    constructor(content, oldType, newType, dateTime, textComment, account, id) {
+    constructor(content, oldType, newType, dateTime, textComment, account, id, isUpdate) {
         this.id = id;
         this.content = content;
         this.oldType = oldType;
@@ -21,6 +21,7 @@ class Text {
         this.dateTime = dateTime;
         this.textComment = textComment;
         this.account = account;
+        this.isUpdate = isUpdate;
     }
 }
 

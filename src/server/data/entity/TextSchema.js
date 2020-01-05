@@ -24,6 +24,9 @@ module.exports = new EntitySchema({
         textComment: {
             type: "varchar",
         },
+        isUpdate: {
+            type: "bit",
+        },
     },
     relations: {
         account: {
