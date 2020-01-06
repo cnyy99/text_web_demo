@@ -73,13 +73,13 @@ app.post('/api/login', async function (req, res) {
     let account = await Repositories.accountRepository.findOne(
         {name: req.body.name}
     );
-    console.log(JSON.stringify(req.body, null, 2));
-    console.log(JSON.stringify(account, null, 2));
+    // console.log(JSON.stringify(req.body, null, 2));
     if (account && account.pwd === sha256(req.body.pwd + SALT).toString()) {
         let cookieString = account.id + '.' + sha256(account.name + SALT)
             .toString();
         account.pwd = account.pwd.substring(0, 1);
         res.cookie('account', cookieString, {expires: new Date(Date.now() + 1000 * 60 * 10)});
+        console.log(JSON.stringify(account, null, 2));
         await res.json(account);
     } else {
         res.status(203).end();
@@ -121,11 +121,13 @@ app.post('/api/logout', function (req, res) {
 });
 
 app.post('/api/getOne/:type', async function (req, res) {
+    console.log(JSON.stringify(req.body, null, 2));
     try {
         const data = await Repositories[req.params.type.toLowerCase() + RepositoryString].findOne(req.body.id);
         if (req.params.type.toLowerCase() === 'account') {
             data.pwd = data.pwd.substring(0, 1);
         }
+        console.log(JSON.stringify(data, null, 2));
         res.json(data);
     } catch (e) {
         console.log('RepositoryType : ' + req.params.type.toLowerCase());
@@ -136,6 +138,7 @@ app.post('/api/getOne/:type', async function (req, res) {
 });
 
 app.post('/api/getSenti', async function (req, res) {
+    console.log(JSON.stringify(req.body, null, 2));
     try {
         const response = await axios({
             method: 'post',
@@ -148,7 +151,7 @@ app.post('/api/getSenti', async function (req, res) {
             }
         });
         // console.log(response.data);
-        // console.log(JSON.stringify(response.data, null, 2));
+        console.log(JSON.stringify(response.data, null, 2));
         res.json(response.data);
 
     } catch (err) {
@@ -156,6 +159,7 @@ app.post('/api/getSenti', async function (req, res) {
     }
 });
 app.post('/api/getAll/:type', async function (req, res) {
+    console.log(JSON.stringify(req.body, null, 2));
     try {
         let data = undefined;
         if (req.params.type.toLowerCase() === 'account' && req.body.data && req.body.data.toLowerCase() === 'administrator') {
@@ -166,8 +170,8 @@ app.post('/api/getAll/:type', async function (req, res) {
                     relations: ["account"]
                 });
         }
+        console.log(JSON.stringify(data,null,2));
         res.json(data);
-        // console.log(JSON.stringify(data,null,2));
     } catch (e) {
         console.log('RepositoryType : ' + req.params.type.toLowerCase());
         console.log('Repository : ' + JSON.stringify(req.body.data, null, 2));
@@ -176,11 +180,11 @@ app.post('/api/getAll/:type', async function (req, res) {
     }
 });
 app.post('/api/save/:type', async function (req, res) {
-    // console.log(JSON.stringify(req.body, null, 2));
+    console.log(JSON.stringify(req.body, null, 2));
     try {
         const data = await Repositories[req.params.type.toLowerCase() + RepositoryString].save(req.body.data);
+        console.log(JSON.stringify(data,null,2));
         res.json(data);
-        // console.log(JSON.stringify(data,null,2));
     } catch (e) {
         console.log('RepositoryType : ' + req.params.type.toLowerCase());
         console.log('Repository : ' + JSON.stringify(req.body.data, null, 2));
@@ -190,6 +194,8 @@ app.post('/api/save/:type', async function (req, res) {
 });
 
 app.post('/api/remove/:type', async function (req, res) {
+    console.log(JSON.stringify(req.body, null, 2));
+
     try {
         if (req.body.data.id === undefined) {
             res.status(200).end();
